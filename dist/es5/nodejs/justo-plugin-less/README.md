@@ -51,12 +51,13 @@ lesslint("Lint Less code", {
 This task compiles *Less* code:
 
 ```
-compile(opts, src : ...string) : number
 compile(opts, config : object) : number
 ```
 
 The `config` properties:
 
+- `src` (string or string[]). The files to compile.
+- `dst` (string). The output.
 - `files` (object[]). The files to compile.
   - `src` (string or string[]). The files to compile.
   - `dst` (string). The output.
@@ -72,25 +73,28 @@ const lessc = require("justo-plugin-less").compile;
 
 //app/styles/cover.less -> dist/styles/cover.css
 lessc("Compile Less code", {
-  files: {
-    src: "app/styles/cover.less",
-    dst: "dist/styles/cover.css"
-  }
+  src: "app/styles/cover.less",
+  dst: "dist/styles/cover.css"
 });
 
 //app/styles/cover.less -> dist/styles/cover.css
 lessc("Compile Less code", {
-  files: {
-    src: "app/styles/cover.less",
-    dst: "dist/styles/"
-  }
+  src: "app/styles/cover.less",
+  dst: "dist/styles/"
 });
 
 //app/styles/* -> dist/styles/*
 lessc("Compile Less code", {
-  files: {
-    src: "app/styles/",
-    dst: "dist/styles/"
-  }
+  src: "app/styles/",
+  dst: "dist/styles/"
+});
+
+//app/styles/a.less -> dist/styles/abc.css
+//app/styles/b.less -> dist/styles/cba.css
+lessc("Compile Less code", {
+  files: [
+    {src: "app/styles/a.less", dst: "dist/styles/abc.css"},
+    {src: "app/styles/b.less", dst: "dist/styles/bca.css"}
+  ]
 });
 ```

@@ -52,6 +52,18 @@ suite("#op()", function() {
     file(TMP, "style2.css").must.exist();
   });
 
+  test("op(config) - Files to dirs (files: object[])", function() {
+    op([{
+      files: [
+        {src: path.join(DATA, "valid/style1.less"), dst: TMP + "/"},
+        {src: path.join(DATA, "valid/style2.less"), dst: TMP + "/"}
+      ]
+    }]).must.be.eq(0);
+
+    file(TMP, "style1.css").must.exist();
+    file(TMP, "style2.css").must.exist();
+  });
+
   test("op(config) - Invalid file", function() {
     op([{
       src: path.join(DATA, "invalid/style1.less"),

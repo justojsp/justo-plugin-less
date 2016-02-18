@@ -12,51 +12,46 @@ op;var _os = require("os");var _os2 = _interopRequireDefault(_os);var _path = re
 
 
   if (params.length === 0) {
-    params = { src: [] };} else 
-  if (params.length === 1) {
-    if (typeof params[0] == "string") params = { src: [params[0]] };else 
-    params = params[0];} else 
-  if (params.length >= 2) {
-    params = { src: params };}
+    params = { files: [] };} else 
+  if (params.length >= 1) {
+    params = params[0];}
 
 
-  if (typeof params.src == "string") params.src = [params.src];
+  if (!params.files) params.files = [];
+  if (params.src) params.files.push({ src: params.src, dst: params.dst });
   if (!params.hasOwnProperty("output")) params.output = true;
 
 
   if (/^win/.test(_os2.default.platform())) cmd = "lessc.cmd";else 
-  cmd = "lessc";
-
-  if (params.compress) args.push("--compress");var _iteratorNormalCompletion = true;var _didIteratorError = false;var _iteratorError = undefined;try {
+  cmd = "lessc";var _iteratorNormalCompletion = true;var _didIteratorError = false;var _iteratorError = undefined;try {
 
 
-    for (var _iterator = params.src[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {var src = _step.value;
-      var entry = fs.entry(src);
+    for (var _iterator = params.files[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {var item = _step.value;
+      if (typeof item.src == "string") item.src = [item.src];var _iteratorNormalCompletion3 = true;var _didIteratorError3 = false;var _iteratorError3 = undefined;try {
 
-      if (entry instanceof fs.Dir) compileDir(entry);else 
-      if (entry instanceof fs.File) compileFile(entry);}} catch (err) {_didIteratorError = true;_iteratorError = err;} finally {try {if (!_iteratorNormalCompletion && _iterator.return) {_iterator.return();}} finally {if (_didIteratorError) {throw _iteratorError;}}}
+        for (var _iterator3 = item.src[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {var src = _step3.value;
+          var entry = fs.entry(src);
+
+          if (entry instanceof fs.File) compileFile(entry.path, item.dst);else 
+          if (entry instanceof fs.Dir) compileDir(entry, item.dst);}} catch (err) {_didIteratorError3 = true;_iteratorError3 = err;} finally {try {if (!_iteratorNormalCompletion3 && _iterator3.return) {_iterator3.return();}} finally {if (_didIteratorError3) {throw _iteratorError3;}}}}} catch (err) {_didIteratorError = true;_iteratorError = err;} finally {try {if (!_iteratorNormalCompletion && _iterator.return) {_iterator.return();}} finally {if (_didIteratorError) {throw _iteratorError;}}}
+
 
 
 
   return exit;
 
 
-  function compileFile(file) {
-    var res, dst;
+  function compileFile(src, dst) {
+    var res;
 
 
-    file = file.path;
-
-
-    if (params.dst.endsWith("/")) {
-      if (file.endsWith(".css")) dst = _path2.default.join(params.dst, file);else 
-      dst = _path2.default.join(params.dst, _path2.default.basename(file, _path2.default.extname(file)) + ".css");} else 
-    {
-      dst = params.dst;}
+    if (dst.endsWith("/")) {
+      if (src.endsWith(".css")) dst = _path2.default.join(dst, _path2.default.basename(src));else 
+      dst = _path2.default.join(dst, _path2.default.basename(src, _path2.default.extname(src)) + ".css");}
 
 
 
-    res = _child_process2.default.spawnSync(cmd, args.concat([file, dst]));
+    res = _child_process2.default.spawnSync(cmd, args.concat([src, dst]));
 
 
     if (params.output) {
@@ -73,7 +68,7 @@ op;var _os = require("os");var _os2 = _interopRequireDefault(_os);var _path = re
     if (exit === 0) exit = res.status;}
 
 
-  function compileDir(dir) {var _iteratorNormalCompletion2 = true;var _didIteratorError2 = false;var _iteratorError2 = undefined;try {
-      for (var _iterator2 = dir.entries[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {var entry = _step2.value;
-        if (entry instanceof fs.File) compileFile(entry);else 
-        compileDir(entry);}} catch (err) {_didIteratorError2 = true;_iteratorError2 = err;} finally {try {if (!_iteratorNormalCompletion2 && _iterator2.return) {_iterator2.return();}} finally {if (_didIteratorError2) {throw _iteratorError2;}}}}}
+  function compileDir(src, dst) {var _iteratorNormalCompletion2 = true;var _didIteratorError2 = false;var _iteratorError2 = undefined;try {
+      for (var _iterator2 = src.entries[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {var entry = _step2.value;
+        if (entry instanceof fs.File) compileFile(entry.path, dst);else 
+        compileDir(entry, dst);}} catch (err) {_didIteratorError2 = true;_iteratorError2 = err;} finally {try {if (!_iteratorNormalCompletion2 && _iterator2.return) {_iterator2.return();}} finally {if (_didIteratorError2) {throw _iteratorError2;}}}}}
