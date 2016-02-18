@@ -1,0 +1,59 @@
+{
+  "name": "justo-plugin-less",
+  "version": "0.1.0",
+  "description": "Tasks for Less.",
+  "homepage": "http://justojs.org",
+  "author": {
+    "name": "Justo Labs",
+    "email": "justojs.org@justolabs.com",
+    "url": "http://justojs.org"
+  },
+  "contributors": [
+    {
+      "name": "Raúl G. González",
+      "email": "raulggonzalez@justojs.org",
+      "url": ""
+    }
+  ],
+  "keywords": [
+    "Css",
+    "Justo",
+    "Justo.js",
+    "justo-plugin",
+    "Less",
+    "lessc"
+  ],
+  "bugs": {
+    "url": "https://github.com/justojsp/justo-plugin-less/issues",
+    "email": "issues@justojs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/justojsp/justo-plugin-less"
+  },
+  "engines": {
+    "node": ">= 5.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "dependencies": {},
+  "peerDependencies": {},
+  "devDependencies": {
+    "babel-preset-es2015": "*",
+    "justo": "*",
+    "justo-assert": "*",
+    "justo-assert-fs": "*",
+    "justo-fs": "*",
+    "justo-plugin-babel": "*",
+    "justo-plugin-fs": "*",
+    "justo-plugin-jshint": "*",
+    "justo-plugin-npm": "*"
+  },
+  "main": "index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "justo test"
+  },
+  "preferGlobal": false
+}
